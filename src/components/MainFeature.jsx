@@ -323,7 +323,6 @@ const MainFeature = ({ activeTab, onSearch }) => {
                         }`}
                       >
                         <TypeIcon size={18} className="mb-1" />
-                        <span className="w-full text-center truncate">{type.label}</span>
                         </button>
                     );
                   })}
