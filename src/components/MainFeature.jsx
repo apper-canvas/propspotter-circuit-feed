@@ -324,7 +324,7 @@ const MainFeature = ({ activeTab, onSearch }) => {
                       >
                         <TypeIcon size={18} className="mb-1" />
                         <span className="w-full text-center truncate">{type.label}</span>
-                        <span className="w-full text-center overflow-hidden text-ellipsis">{type.label}</span>
+                        </button>
                     );
                   })}
                 </div>
