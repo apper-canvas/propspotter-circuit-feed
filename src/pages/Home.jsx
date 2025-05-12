@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import getIcon from '../utils/iconUtils';
@@ -44,17 +44,17 @@ function Home() {
       description: "Clear pricing information with no hidden fees",
       icon: DollarSignIcon 
     },
-    { 
-      title: "Detailed Floor Plans", 
+    {
+      title: "Detailed Floor Plans",
       description: "Explore property layouts before scheduling a visit",
-  };
-  
+      icon: SquareIcon
+    }
   ];
-  const hasFilters = searchCriteria !== null;
+
   const totalProperties = filteredProperties.length;
   const totalAllProperties = allProperties.length;
   // Initialize properties on component mount
-  useState(() => {
+  useEffect(() => {
     const props = generateSampleProperties(100);
     setAllProperties(props);
     setFilteredProperties(props);
@@ -70,7 +70,6 @@ function Home() {
       autoClose: 3000
     });
   };
-      position: "bottom-right",
   // Clear all filters
   const clearFilters = () => {
     setSearchCriteria(null);
@@ -93,7 +92,6 @@ function Home() {
       <section className="relative py-12 md:py-20 overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10">
         <div className="absolute inset-0 overflow-hidden z-0">
           <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-5 dark:opacity-10"></div>
-      <MainFeature activeTab={activeTab} onSearch={handleSearch} />
           {hasFilters && (
           <div className="container mx-auto px-4 relative z-10">
             <motion.h1 
@@ -118,12 +116,6 @@ function Home() {
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
-                  <button
-                className="text-sm text-surface-600 dark:text-surface-400 hover:text-primary dark:hover:text-primary-light transition-colors"
-              >
-                Clear All
-              </button>
-            </div>
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`relative flex items-center space-x-2 px-6 py-2.5 rounded-md font-medium transition-all duration-200 ${
@@ -146,7 +138,6 @@ function Home() {
           </div>
         
 
-          <MainFeature activeTab={activeTab} onSearch={handlePropertySearch} />
           <MainFeature activeTab={activeTab} onSearch={handleSearch} />
           <div className="container mx-auto px-4 mt-12">
             <div className="mt-16 space-y-6">
@@ -171,6 +162,7 @@ function Home() {
                       className="text-sm text-surface-600 dark:text-surface-400 hover:text-primary dark:hover:text-primary-light transition-colors"
                     >
                       Clear All
+                    </button>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-16">
             {heroFeatures.map((feature, index) => {
               const FeatureIcon = feature.icon;
@@ -191,7 +183,6 @@ function Home() {
                 </motion.div>
               );
             })}
-                    </button>
                   </div>
                 )}
               </div>
