@@ -19,40 +19,16 @@ function Home() {
   const DollarSignIcon = getIcon('DollarSign');
   const SquareIcon = getIcon('Square');
 
-  const properties = generateSampleProperties(100);
-  
-    // Generate sample properties
-    const properties = generateSampleProperties(100);
-    setAllProperties(properties);
-    setFilteredProperties(properties);
+  const tabs = [
     { id: 'buy', label: 'Buy', icon: HomeIcon },
     { id: 'rent', label: 'Rent', icon: BuildingIcon },
-  // Handle search form submission
-  const handleSearch = (formData) => {
-    setSearchCriteria(formData);
-    const filtered = filterProperties(allProperties, formData);
-    setFilteredProperties(filtered);
-    
-    toast.success(`Found ${filtered.length} properties matching your criteria`, {
-      autoClose: 3000
-    });
-  };
-  
-  // Clear all filters
-  const clearFilters = () => {
-    setSearchCriteria(null);
-    setFilteredProperties(allProperties);
-    toast.info('All filters cleared', {
-      autoClose: 2000
-    });
-  };
-  
   ];
+
   const hasFilters = searchCriteria !== null;
   const totalProperties = filteredProperties.length;
   const totalAllProperties = allProperties.length;
+
   const heroFeatures = [
-  // Render component
     { 
       title: "Extensive Property Database", 
       description: "Browse thousands of verified listings across the country",
@@ -71,17 +47,41 @@ function Home() {
     { 
       title: "Detailed Floor Plans", 
       description: "Explore property layouts before scheduling a visit",
-      icon: SquareIcon 
-    },
-  ];
+  };
   
-  const handleSearch = (searchData) => {
-    console.log('Search Data:', searchData);
-    toast.success(`Searching for ${searchData.propertyType} in ${searchData.location}`, {
+  ];
+  const hasFilters = searchCriteria !== null;
+  const totalProperties = filteredProperties.length;
+  const totalAllProperties = allProperties.length;
+  // Initialize properties on component mount
+  useState(() => {
+    const props = generateSampleProperties(100);
+    setAllProperties(props);
+    setFilteredProperties(props);
+  }, []);
+
+  // Handle search form submission
+  const handleSearch = (formData) => {
+    setSearchCriteria(formData);
+    const filtered = filterProperties(allProperties, formData);
+    setFilteredProperties(filtered);
+    
+    toast.success(`Found ${filtered.length} properties matching your criteria`, {
+      autoClose: 3000
+    });
+  };
       position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchCriteria(null);
+    setFilteredProperties(allProperties);
+    toast.info('All filters cleared', {
+      autoClose: 2000
+    });
+  };
+
+  const handlePropertySearch = (searchData) => {
+    toast.success(`Searching for ${searchData.propertyType || 'properties'} in ${searchData.location || 'all locations'}`, {
       pauseOnHover: true,
       draggable: true,
     });
@@ -94,43 +94,8 @@ function Home() {
         <div className="absolute inset-0 overflow-hidden z-0">
           <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-5 dark:opacity-10"></div>
       <MainFeature activeTab={activeTab} onSearch={handleSearch} />
-        
-        <div className="container mx-auto px-4 relative z-10">
-      <div className="mt-16 space-y-6">
-        {/* Search Results Info */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between">
-          <h2 className="text-xl md:text-2xl font-semibold">
-            {hasFilters
-              ? `${totalProperties} Properties Found`
-              : `All Properties (${totalAllProperties})`
-            }
-          </h2>
-          
           {hasFilters && (
-            <div className="flex items-center mt-3 md:mt-0">
-              <div className="flex items-center bg-primary/10 text-primary px-3 py-1.5 rounded-lg mr-3">
-                <FilterIcon size={16} className="mr-1.5" />
-                <span className="text-sm font-medium">Filters Applied</span>
-              </div>
-              
-              <button
-                onClick={clearFilters}
-                className="text-sm text-surface-600 dark:text-surface-400 hover:text-primary dark:hover:text-primary-light transition-colors"
-              >
-                Clear All
-              </button>
-            </div>
-          )}
-        </div>
-        
-        {totalProperties === 0 && (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="text-4xl mb-4">🏠</div>
-            <h3 className="text-xl font-medium mb-2">No properties found</h3>
-            <p className="text-surface-600 dark:text-surface-400 max-w-md">Try adjusting your search criteria to find properties that match your preferences.</p>
-          </div>
-        )}
-        
+          <div className="container mx-auto px-4 relative z-10">
             <motion.h1 
               className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
               initial={{ opacity: 0, y: 20 }}
@@ -138,7 +103,7 @@ function Home() {
               transition={{ duration: 0.5 }}
             >
               Find Your Dream Property Effortlessly
-          <PropertyGrid properties={filteredProperties} />
+            </motion.h1>
             <motion.p 
               className="text-lg md:text-xl text-surface-700 dark:text-surface-300 mb-8"
               initial={{ opacity: 0, y: 20 }}
@@ -154,6 +119,11 @@ function Home() {
                 const Icon = tab.icon;
                 return (
                   <button
+                className="text-sm text-surface-600 dark:text-surface-400 hover:text-primary dark:hover:text-primary-light transition-colors"
+              >
+                Clear All
+              </button>
+            </div>
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`relative flex items-center space-x-2 px-6 py-2.5 rounded-md font-medium transition-all duration-200 ${
@@ -164,9 +134,6 @@ function Home() {
                   >
                     {activeTab === tab.id && (
                       <motion.div
-                        layoutId="activeTabBg"
-                        className="absolute inset-0 bg-primary rounded-md"
-                        initial={false}
                         transition={{ type: 'spring', duration: 0.5 }}
                       />
                     )}
@@ -178,9 +145,32 @@ function Home() {
             </div>
           </div>
         
+
+          <MainFeature activeTab={activeTab} onSearch={handlePropertySearch} />
           <MainFeature activeTab={activeTab} onSearch={handleSearch} />
-          
-          {/* Features Grid */}
+          <div className="container mx-auto px-4 mt-12">
+            <div className="mt-16 space-y-6">
+              {/* Search Results Info */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between">
+                <h2 className="text-xl md:text-2xl font-semibold">
+                  {hasFilters
+                    ? `${totalProperties} Properties Found`
+                    : `All Properties (${totalAllProperties})`
+                  }
+                </h2>
+                
+                {hasFilters && (
+                  <div className="flex items-center mt-3 md:mt-0">
+                    <div className="flex items-center bg-primary/10 text-primary px-3 py-1.5 rounded-lg mr-3">
+                      <FilterIcon size={16} className="mr-1.5" />
+                      <span className="text-sm font-medium">Filters Applied</span>
+                    </div>
+                    
+                    <button
+                      onClick={clearFilters}
+                      className="text-sm text-surface-600 dark:text-surface-400 hover:text-primary dark:hover:text-primary-light transition-colors"
+                    >
+                      Clear All
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-16">
             {heroFeatures.map((feature, index) => {
               const FeatureIcon = feature.icon;
@@ -201,6 +191,21 @@ function Home() {
                 </motion.div>
               );
             })}
+                    </button>
+                  </div>
+                )}
+              </div>
+              
+              {totalProperties === 0 && (
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <div className="text-4xl mb-4">🏠</div>
+                  <h3 className="text-xl font-medium mb-2">No properties found</h3>
+                  <p className="text-surface-600 dark:text-surface-400 max-w-md">Try adjusting your search criteria to find properties that match your preferences.</p>
+                </div>
+              )}
+              
+              <PropertyGrid properties={filteredProperties} />
+            </div>
           </div>
         </div>
       </section>
@@ -228,7 +233,7 @@ function Home() {
           </div>
           
           {/* Property Grid with Pagination */}
-          <PropertyGrid properties={properties} />
+          <PropertyGrid properties={filteredProperties} />
         </div>
       </section>
     </div>
