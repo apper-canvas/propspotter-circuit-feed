@@ -318,8 +318,7 @@ const MainFeature = ({ activeTab, onSearch }) => {
                         type="button"
                         onClick={() => handlePropertyTypeSelect(type.id)}
                         className={`flex flex-col items-center justify-center py-2 px-1 h-[70px] rounded-lg text-sm transition-all ${
-                        className={`flex flex-col items-center justify-center py-2 px-3 h-[70px] rounded-lg text-sm transition-all ${
-                            ? 'bg-primary text-white' 
+                            isSelected ? 'bg-primary text-white' 
                             : 'bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-300 hover:bg-surface-200 dark:hover:bg-surface-600'
                         }`}
                       >
