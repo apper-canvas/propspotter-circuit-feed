@@ -307,7 +307,7 @@ const MainFeature = ({ activeTab, onSearch }) => {
               {/* Property Type Selection */}
               <div className="md:col-span-4">
                 <label className="form-label">Property Type</label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {propertyTypes.map((type) => {
                     const TypeIcon = type.icon;
                     const isSelected = selectedPropertyType === type.id;
@@ -318,14 +318,14 @@ const MainFeature = ({ activeTab, onSearch }) => {
                         type="button"
                         onClick={() => handlePropertyTypeSelect(type.id)}
                         className={`flex flex-col items-center justify-center py-2 px-1 h-[70px] rounded-lg text-sm transition-all ${
-                          isSelected
+                        className={`flex flex-col items-center justify-center py-2 px-3 h-[70px] rounded-lg text-sm transition-all ${
                             ? 'bg-primary text-white' 
                             : 'bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-300 hover:bg-surface-200 dark:hover:bg-surface-600'
                         }`}
                       >
                         <TypeIcon size={18} className="mb-1" />
                         <span className="w-full text-center truncate">{type.label}</span>
-                      </button>
+                        <span className="w-full text-center overflow-hidden text-ellipsis">{type.label}</span>
                     );
                   })}
                 </div>
