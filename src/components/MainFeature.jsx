@@ -317,14 +317,14 @@ const MainFeature = ({ activeTab, onSearch }) => {
                         key={type.id}
                         type="button"
                         onClick={() => handlePropertyTypeSelect(type.id)}
-                        className={`flex flex-col items-center justify-center py-2 rounded-lg text-sm transition-all ${
+                        className={`flex flex-col items-center justify-center py-2 px-1 h-[70px] rounded-lg text-sm transition-all ${
                           isSelected
                             ? 'bg-primary text-white' 
                             : 'bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-300 hover:bg-surface-200 dark:hover:bg-surface-600'
                         }`}
                       >
                         <TypeIcon size={18} className="mb-1" />
-                        <span>{type.label}</span>
+                        <span className="w-full text-center truncate">{type.label}</span>
                       </button>
                     );
                   })}
