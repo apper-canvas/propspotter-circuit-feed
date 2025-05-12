@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import getIcon from '../utils/iconUtils';
+import { toast } from 'react-toastify';
 import PropertyGrid from '../components/PropertyGrid';
-import MainFeature from '../components/MainFeature';
+import { generateSampleProperties, filterProperties } from '../utils/propertyUtils';
 import getIcon from '../utils/iconUtils';
 import { generateSampleProperties } from '../utils/propertyUtils';
 
+  const [searchCriteria, setSearchCriteria] = useState(null);
+  const [allProperties, setAllProperties] = useState([]);
+  const [filteredProperties, setFilteredProperties] = useState([]);
+  const FilterIcon = getIcon('Filter');
 function Home() {
   const [activeTab, setActiveTab] = useState('buy');
   
@@ -18,12 +24,38 @@ function Home() {
 
   const properties = generateSampleProperties(100);
   
-  const tabs = [
+    // Generate sample properties
+    const properties = generateSampleProperties(100);
+    setAllProperties(properties);
+    setFilteredProperties(properties);
     { id: 'buy', label: 'Buy', icon: HomeIcon },
     { id: 'rent', label: 'Rent', icon: BuildingIcon },
-  ];
+  // Handle search form submission
+  const handleSearch = (formData) => {
+    setSearchCriteria(formData);
+    const filtered = filterProperties(allProperties, formData);
+    setFilteredProperties(filtered);
+    
+    toast.success(`Found ${filtered.length} properties matching your criteria`, {
+      autoClose: 3000
+    });
+  };
   
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchCriteria(null);
+    setFilteredProperties(allProperties);
+    toast.info('All filters cleared', {
+      autoClose: 2000
+    });
+  };
+  
+  ];
+  const hasFilters = searchCriteria !== null;
+  const totalProperties = filteredProperties.length;
+  const totalAllProperties = allProperties.length;
   const heroFeatures = [
+  // Render component
     { 
       title: "Extensive Property Database", 
       description: "Browse thousands of verified listings across the country",
@@ -64,10 +96,44 @@ function Home() {
       <section className="relative py-12 md:py-20 overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10">
         <div className="absolute inset-0 overflow-hidden z-0">
           <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-5 dark:opacity-10"></div>
-        </div>
+      <MainFeature activeTab={activeTab} onSearch={handleSearch} />
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16">
+      <div className="mt-16 space-y-6">
+        {/* Search Results Info */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between">
+          <h2 className="text-xl md:text-2xl font-semibold">
+            {hasFilters
+              ? `${totalProperties} Properties Found`
+              : `All Properties (${totalAllProperties})`
+            }
+          </h2>
+          
+          {hasFilters && (
+            <div className="flex items-center mt-3 md:mt-0">
+              <div className="flex items-center bg-primary/10 text-primary px-3 py-1.5 rounded-lg mr-3">
+                <FilterIcon size={16} className="mr-1.5" />
+                <span className="text-sm font-medium">Filters Applied</span>
+              </div>
+              
+              <button
+                onClick={clearFilters}
+                className="text-sm text-surface-600 dark:text-surface-400 hover:text-primary dark:hover:text-primary-light transition-colors"
+              >
+                Clear All
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {totalProperties === 0 && (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="text-4xl mb-4">🏠</div>
+            <h3 className="text-xl font-medium mb-2">No properties found</h3>
+            <p className="text-surface-600 dark:text-surface-400 max-w-md">Try adjusting your search criteria to find properties that match your preferences.</p>
+          </div>
+        )}
+        
             <motion.h1 
               className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
               initial={{ opacity: 0, y: 20 }}
@@ -75,7 +141,7 @@ function Home() {
               transition={{ duration: 0.5 }}
             >
               Find Your Dream Property Effortlessly
-            </motion.h1>
+          <PropertyGrid properties={filteredProperties} />
             <motion.p 
               className="text-lg md:text-xl text-surface-700 dark:text-surface-300 mb-8"
               initial={{ opacity: 0, y: 20 }}

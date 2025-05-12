@@ -105,3 +105,99 @@ export function paginateItems(items, currentPage, itemsPerPage) {
     }
   };
 }
+
+/**
+ * Filter properties based on search criteria
+ * @param {Array} properties - Array of properties to filter
+ * @param {Object} criteria - Search criteria object
+ * @returns {Array} Filtered properties
+ */
+export function filterProperties(properties, criteria) {
+  if (!properties || !criteria) return properties;
+  
+  return properties.filter(property => {
+    // Location filter (case insensitive partial match)
+    if (criteria.location && criteria.location.trim() !== '') {
+      const locationString = `${property.address} ${property.city} ${property.state} ${property.zipCode}`.toLowerCase();
+      if (!locationString.includes(criteria.location.toLowerCase())) {
+        return false;
+      }
+    }
+    
+    // Property type filter
+    if (criteria.propertyType && criteria.propertyType !== 'residential') {
+      // Map the search form property types to actual property types
+      const typeMap = {
+        'apartment': ['Apartment', 'Flat', 'Penthouse'],
+        'commercial': ['Commercial', 'Office Space', 'Shop', 'Retail'],
+        'land': ['Land', 'Plot']
+      };
+      
+      if (typeMap[criteria.propertyType]) {
+        if (!typeMap[criteria.propertyType].some(type => property.type.includes(type))) {
+          return false;
+        }
+      }
+    }
+    
+    // Price range filter
+    if (criteria.priceRange && Array.isArray(criteria.priceRange) && criteria.priceRange.length === 2) {
+      const [minPrice, maxPrice] = criteria.priceRange;
+      if (property.price < minPrice || (maxPrice > 0 && property.price > maxPrice)) {
+        return false;
+      }
+    }
+    
+    // Bedrooms filter
+    if (criteria.bedrooms && criteria.bedrooms !== '') {
+      if (property.beds < parseInt(criteria.bedrooms)) {
+        return false;
+      }
+    }
+    
+    // Bathrooms filter
+    if (criteria.bathrooms && criteria.bathrooms !== '') {
+      if (property.baths < parseInt(criteria.bathrooms)) {
+        return false;
+      }
+    }
+    
+    // Minimum area filter
+    if (criteria.minArea && criteria.minArea !== '') {
+      if (property.squareFeet < parseInt(criteria.minArea)) {
+        return false;
+      }
+    }
+    
+    // Keywords filter (case insensitive search in title and description)
+    if (criteria.keywords && criteria.keywords.trim() !== '') {
+      const searchString = `${property.title} ${property.description}`.toLowerCase();
+      const keywords = criteria.keywords.toLowerCase().split(/\s+/);
+      if (!keywords.every(keyword => searchString.includes(keyword))) {
+        return false;
+      }
+    }
+    
+    // Amenities filter
+    if (criteria.amenities && criteria.amenities.length > 0) {
+      // Map amenity IDs to property feature names
+      const amenityMap = {
+        'parking': 'Parking',
+        'gym': 'Gym',
+        'pool': 'Swimming Pool',
+        'security': 'Security System',
+        'elevator': 'Elevator',
+        'furnished': 'Furnished'
+      };
+      
+      for (const amenityId of criteria.amenities) {
+        const featureName = amenityMap[amenityId];
+        if (featureName && !property.features.includes(featureName)) {
+          return false;
+        }
+      }
+    }
+    
+    return true;
+  });
+}
