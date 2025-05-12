@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
+import PropertyGrid from '../components/PropertyGrid';
 import MainFeature from '../components/MainFeature';
 import getIcon from '../utils/iconUtils';
+import { generateSampleProperties } from '../utils/propertyUtils';
 
-export default function Home() {
+function Home() {
   const [activeTab, setActiveTab] = useState('buy');
   
   const BuildingIcon = getIcon('Building');
@@ -13,6 +15,8 @@ export default function Home() {
   const MapPinIcon = getIcon('MapPin');
   const DollarSignIcon = getIcon('DollarSign');
   const SquareIcon = getIcon('Square');
+
+  const properties = generateSampleProperties(100);
   
   const tabs = [
     { id: 'buy', label: 'Buy', icon: HomeIcon },
@@ -137,6 +141,34 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Properties Section */}
+      <section className="py-12 md:py-16 bg-surface-50 dark:bg-surface-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-10">
+            <motion.h2 
+              className="text-2xl md:text-4xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Featured Properties
+            </motion.h2>
+            <motion.p 
+              className="text-surface-600 dark:text-surface-400 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Explore our curated selection of premium properties across various locations
+            </motion.p>
+          </div>
+          
+          {/* Property Grid with Pagination */}
+          <PropertyGrid properties={properties} />
+        </div>
+      </section>
     </div>
   );
 }
+export default Home;
