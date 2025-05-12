@@ -51,8 +51,6 @@ function Home() {
     }
   ];
 
-  const totalProperties = filteredProperties.length;
-  const totalAllProperties = allProperties.length;
   // Initialize properties on component mount
   useEffect(() => {
     const props = generateSampleProperties(100);
