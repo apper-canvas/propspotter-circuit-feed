@@ -2,17 +2,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import getIcon from '../utils/iconUtils';
-import { toast } from 'react-toastify';
 import PropertyGrid from '../components/PropertyGrid';
 import { generateSampleProperties, filterProperties } from '../utils/propertyUtils';
-import getIcon from '../utils/iconUtils';
-import { generateSampleProperties } from '../utils/propertyUtils';
 
+function Home() {
   const [searchCriteria, setSearchCriteria] = useState(null);
   const [allProperties, setAllProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const FilterIcon = getIcon('Filter');
-function Home() {
   const [activeTab, setActiveTab] = useState('buy');
   
   const BuildingIcon = getIcon('Building');
