@@ -5,9 +5,9 @@ import { format } from 'date-fns';
  * @returns {Array} Array of property objects
  */
 export function generateSampleProperties(count = 100) {
-  const propertyTypes = ['Apartment', 'House', 'Condo', 'Townhouse', 'Villa', 'Duplex', 'Studio', 'Penthouse'];
-  const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'Austin'];
-  const neighborhoods = ['Downtown', 'Midtown', 'Uptown', 'West End', 'East Side', 'South Side', 'North Hills', 'Riverside', 'Lakefront', 'Suburbia'];
+  const propertyTypes = ['Apartment', 'Flat', 'Villa', 'Builder Floor', 'Penthouse', 'Bungalow', 'Independent House', 'Row House'];
+  const cities = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Gurgaon'];
+  const neighborhoods = ['Bandra', 'Andheri', 'Powai', 'Malad', 'Indiranagar', 'Koramangala', 'Whitefield', 'Jubilee Hills', 'T Nagar', 'Salt Lake'];
   const features = ['Air Conditioning', 'Swimming Pool', 'Gym', 'Parking', 'Balcony', 'Garden', 'Fireplace', 'Security System', 'Elevator', 'Storage'];
   
   const getRandomItem = (array) => array[Math.floor(Math.random() * array.length)];
@@ -40,9 +40,10 @@ export function generateSampleProperties(count = 100) {
       const bedrooms = Math.floor(Math.random() * 5) + 1;
       const bathrooms = Math.floor(Math.random() * 3) + 1;
       const squareFeet = Math.floor(Math.random() * 2000) + 500;
-      const price = type === 'Penthouse' || type === 'Villa' 
-        ? getRandomPrice(500000, 2000000) 
-        : getRandomPrice(150000, 800000);
+      // Indian property prices (in INR)
+      const price = type === 'Penthouse' || type === 'Villa' || type === 'Bungalow'
+        ? getRandomPrice(15000000, 80000000) 
+        : getRandomPrice(3000000, 15000000);
       const pricePerSqFt = Math.floor(price / squareFeet);
       
       // Random image using placeholder service
@@ -54,10 +55,10 @@ export function generateSampleProperties(count = 100) {
         type,
         price,
         pricePerSqFt,
-        address: `${Math.floor(Math.random() * 9999) + 1} ${neighborhood} St.`,
+        address: `${Math.floor(Math.random() * 999) + 1}, ${neighborhood}`,
         city,
-        state: 'NY', // Just for sample data
-        zipCode: `${Math.floor(Math.random() * 90000) + 10000}`,
+        state: getRandomItem(['MH', 'DL', 'KA', 'TL', 'TN', 'WB', 'GJ', 'RJ']), // Indian state codes
+        zipCode: `${Math.floor(Math.random() * 90000) + 100000}`, // Indian PIN codes are 6 digits
         beds: bedrooms,
         baths: bathrooms,
         squareFeet,
@@ -69,9 +70,9 @@ export function generateSampleProperties(count = 100) {
         favorite: Math.random() > 0.8,
         image: `https://picsum.photos/seed/${id}/800/600`,
         agent: {
-          name: `Agent ${Math.floor(Math.random() * 20) + 1}`,
-          phone: `(555) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
-          email: `agent${Math.floor(Math.random() * 99) + 1}@propspotter.com`,
+          name: `Agent ${['Sharma', 'Patel', 'Singh', 'Gupta', 'Kumar', 'Verma', 'Nair', 'Iyer'][Math.floor(Math.random() * 8)]}`,
+          phone: `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`, // Indian phone numbers
+          email: `agent${Math.floor(Math.random() * 99) + 1}@propspotter.in`,
         }
       };
     });

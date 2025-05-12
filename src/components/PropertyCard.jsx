@@ -36,7 +36,7 @@ const PropertyCard = ({ property }) => {
       {/* Property Details */}
       <div className="p-4">
         <div className="text-xl font-bold text-surface-900 dark:text-white mb-1">
-          ${property.price.toLocaleString()}
+          ₹{property.price.toLocaleString()}
         </div>
         <h3 className="text-base font-medium mb-2 line-clamp-1">{property.title}</h3>
         <p className="text-surface-600 dark:text-surface-400 text-sm mb-3 line-clamp-1">
