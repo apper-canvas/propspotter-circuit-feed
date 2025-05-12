@@ -90,7 +90,8 @@ function Home() {
       <section className="relative py-12 md:py-20 overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10">
         <div className="absolute inset-0 overflow-hidden z-0">
           <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-5 dark:opacity-10"></div>
-          {hasFilters && (
+        </div>
+        {hasFilters && (
           <div className="container mx-auto px-4 relative z-10">
             <motion.h1 
               className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
@@ -135,10 +136,11 @@ function Home() {
               })}
             </div>
           </div>
+        )}
         
-
+        <div className="container mx-auto px-4 relative z-10">
           <MainFeature activeTab={activeTab} onSearch={handleSearch} />
-          <div className="container mx-auto px-4 mt-12">
+          <div className="mt-12">
             <div className="mt-16 space-y-6">
               {/* Search Results Info */}
               <div className="flex flex-col md:flex-row md:items-center justify-between">
@@ -162,6 +164,8 @@ function Home() {
                     >
                       Clear All
                     </button>
+                  </div>
+                )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-16">
             {heroFeatures.map((feature, index) => {
               const FeatureIcon = feature.icon;
@@ -182,8 +186,6 @@ function Home() {
                 </motion.div>
               );
             })}
-                  </div>
-                )}
               </div>
               
               {totalProperties === 0 && (
